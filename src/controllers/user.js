@@ -54,4 +54,31 @@ async function loginUser(req, res) {
     }
 }
 
-module.exports = { registerUser, loginUser };
+async function findUserById(req, res) {
+    const id = req.params.userId;
+    try {
+        const user = await User.findById(id);
+        res.status(200).json({ user });
+    } catch (error) {
+        console.log(error);
+        const msg = error.message;
+        res.status(500).json({
+            msg,
+        });
+    }
+}
+
+async function getAllUsers(req, res) {
+    try {
+        const users = await User.find({});
+        res.status(200).json({ users });
+    } catch (error) {
+        console.log(error);
+        const msg = error.message;
+        res.status(500).json({
+            msg,
+        });
+    }
+}
+
+module.exports = { registerUser, loginUser, findUserById, getAllUsers };
