@@ -26,6 +26,16 @@ const userSchema = new mongoose.Schema(
     }
 );
 
-const User = mongoose.model("User", userSchema);
+const chatSchema = new mongoose.Schema(
+    {
+        members: Array,
+    },
+    {
+        timestamps: true,
+    }
+);
 
-module.exports = User;
+const User = mongoose.model("User", userSchema);
+const Chat = mongoose.model("Chat", chatSchema);
+
+module.exports = { User, Chat };

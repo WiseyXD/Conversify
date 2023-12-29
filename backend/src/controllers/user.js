@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const User = require("../db/index");
-const { loginUserToDB, addUserToDB } = require("../db/helper");
+const { User } = require("../db/index");
+const { loginUserToDB, addUserToDB } = require("../db/authHelper");
 const { signupSchema, loginSchema } = require("../utils/inputValidation");
 
 async function registerUser(req, res) {
