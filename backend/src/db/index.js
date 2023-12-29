@@ -35,7 +35,19 @@ const chatSchema = new mongoose.Schema(
     }
 );
 
+const messageSchema = new mongoose.Schema(
+    {
+        chatId: String,
+        senderId: String,
+        text: String,
+    },
+    {
+        timestamps: true,
+    }
+);
+
 const User = mongoose.model("User", userSchema);
 const Chat = mongoose.model("Chat", chatSchema);
+const Message = mongoose.model("Message", messageSchema);
 
-module.exports = { User, Chat };
+module.exports = { User, Chat, Message };
