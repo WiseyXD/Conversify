@@ -13,7 +13,7 @@ function App() {
     return (
         <>
             <Navbar />
-            <div className="max-w-full mx-auto px-7">
+            <div className="max-w-full mx-auto px-7 bg-base-300">
                 <Routes>
                     <Route path="/" element={<Chat />} />
                     <Route path="/login" element={<Login />} />
