@@ -1,16 +1,23 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../redux/services/authApi";
+import { setAuth } from "../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-    const [loginMutation] = useLoginMutation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginMutation] = useLoginMutation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     async function handleLogin(e) {
         e.preventDefault();
         try {
             const { data } = await loginMutation({ email, password });
-            console.log(data);
+            console.log(data.token);
+            dispatch(setAuth(data?.token));
+            navigate("/");
         } catch (error) {
             console.log(error);
         }

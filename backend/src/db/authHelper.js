@@ -27,13 +27,17 @@ async function addUserToDB(name, email, password) {
 
 async function loginUserToDB(email, password) {
     try {
+        let credentials;
         const exists = await userExistsInDB(email, password);
         if (!exists) {
             throw new Error("User Not present in DB please Signup");
             return;
         }
         const token = jwt.sign(email, jwtKey);
-        return token;
+        return (credentials = {
+            token,
+            email,
+        });
     } catch (error) {
         console.log(error.message);
         return error;
