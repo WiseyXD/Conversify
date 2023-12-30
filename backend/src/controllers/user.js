@@ -43,9 +43,9 @@ async function loginUser(req, res) {
         if (!response.success) {
             throw new Error(response.error.errors[0].message);
         }
-        const token = await loginUserToDB(email, password);
+        const user = await loginUserToDB(email, password);
         res.status(200).json({
-            token,
+            user,
         });
     } catch (error) {
         msg = error.message;

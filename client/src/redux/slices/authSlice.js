@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     token: null,
     email: null,
+    id: null,
 };
 
 export const authSlice = createSlice({
@@ -11,11 +12,13 @@ export const authSlice = createSlice({
     reducers: {
         setAuth: (state, action) => {
             state.token = action.payload.token;
-            state.email = action.payload.email;
+            state.email = action.payload.exists.email;
+            state.id = action.payload.exists._id;
         },
         deleteAuth: (state, action) => {
             state.token = null;
             state.email = null;
+            state.id = null;
         },
     },
 });

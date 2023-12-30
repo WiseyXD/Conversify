@@ -36,7 +36,7 @@ async function loginUserToDB(email, password) {
         const token = jwt.sign(email, jwtKey);
         return (credentials = {
             token,
-            email,
+            exists,
         });
     } catch (error) {
         console.log(error.message);

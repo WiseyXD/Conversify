@@ -15,8 +15,8 @@ export default function Login() {
         e.preventDefault();
         try {
             const { data } = await loginMutation({ email, password });
-            console.log(data.token);
-            dispatch(setAuth(data?.token));
+            console.log(data.user);
+            dispatch(setAuth(data?.user));
             navigate("/");
         } catch (error) {
             console.log(error);
