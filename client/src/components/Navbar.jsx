@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function Navbar() {
-    const [isAuthorized, setIsAuthorized] = useState(false);
+    const [isAuthorized, setIsAuthorized] = useState(true);
     return (
         <div className="navbar bg-neutral">
             <div className="flex-1">
@@ -9,7 +9,7 @@ export default function Navbar() {
             </div>
             {isAuthorized ? (
                 <>
-                    <ul className="menu bg-neutral lg:menu-horizontal rounded-box">
+                    <ul className="menu bg-neutral hidden md:menu-horizontal rounded-box">
                         <li>
                             <a>
                                 <svg
