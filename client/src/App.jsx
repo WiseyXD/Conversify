@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
@@ -18,15 +18,25 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={isAuthorized ? <Chat /> : <Error />}
+                        element={
+                            isAuthorized ? (
+                                <Chat />
+                            ) : (
+                                <Navigate to="/register" />
+                            )
+                        }
                     />
                     <Route
                         path="/login"
-                        element={!isAuthorized ? <Login /> : <Chat />}
+                        element={
+                            !isAuthorized ? <Login /> : <Navigate to="/" />
+                        }
                     />
                     <Route
                         path="/register"
-                        element={!isAuthorized ? <Register /> : <Chat />}
+                        element={
+                            !isAuthorized ? <Register /> : <Navigate to="/" />
+                        }
                     />
                     <Route path="*" element={<Error />} />
                 </Routes>
