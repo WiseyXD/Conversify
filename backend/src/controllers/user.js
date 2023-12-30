@@ -18,6 +18,7 @@ async function registerUser(req, res) {
             throw new Error(response.error.errors[0].message);
         }
         const user = await addUserToDB(name, email, password);
+        user.save();
         res.status(201).json({
             msg: "User Creation Succesfull",
             user,

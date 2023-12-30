@@ -1,5 +1,5 @@
 require("dotenv").config();
-const User = require("./index");
+const { User } = require("./index");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jwtKey = process.env.JWT_KEY;
@@ -50,7 +50,7 @@ async function userExistsInDB(email, password) {
         }
         return false;
     } catch (error) {
-        console.log("Error while searching user in DB" + error.message);
+        console.log("Error while searching user in DB " + error.message);
         return error;
     }
 }
