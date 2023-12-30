@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLoginMutation } from "../redux/services/authApi";
 
 export default function Login() {
+    const [loginMutation] = useLoginMutation();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    async function handleLogin(e) {
+        e.preventDefault();
+        try {
+            const { data } = await loginMutation({ email, password });
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className="hero min-h-screen bg-transparent">
             <div className="hero-content flex-col lg:flex-row-reverse">
@@ -13,7 +27,10 @@ export default function Login() {
                     </p>
                 </div>
                 <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-                    <form className="card-body">
+                    <form
+                        className="card-body"
+                        onSubmit={(e) => handleLogin(e)}
+                    >
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email</span>
@@ -22,6 +39,7 @@ export default function Login() {
                                 type="email"
                                 placeholder="email"
                                 className="input input-bordered"
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                         </div>
@@ -33,6 +51,7 @@ export default function Login() {
                                 type="password"
                                 placeholder="password"
                                 className="input input-bordered"
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                             <label className="label">
@@ -45,7 +64,9 @@ export default function Login() {
                             </label>
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Login</button>
+                            <button className="btn btn-primary" type="submit">
+                                Login
+                            </button>
                         </div>
                     </form>
                 </div>
