@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { useSignupMutation } from "../redux/services/authApi";
+import { useNavigate } from "react-router-dom";
 export default function Register() {
-    const [signupMutation] = useSignupMutation();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [signupMutation] = useSignupMutation();
+    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
         try {
             const { data } = await signupMutation({ name, email, password });
             console.log(data);
+            navigate("/login");
         } catch (error) {
             console.log(error);
         }

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAuth } from "../redux/slices/authSlice";
 export default function Navbar() {
-    const [isAuthorized, setIsAuthorized] = useState(true);
+    const isAuthorized = useSelector((state) => state.root.auth.token);
+    const dispatch = useDispatch();
+    async function handleLogout() {
+        dispatch(deleteAuth());
+    }
     return (
         <div className="navbar bg-neutral">
             <div className="flex-1">
@@ -89,7 +94,7 @@ export default function Navbar() {
                                     <a>Settings</a>
                                 </li>
                                 <li>
-                                    <a>Logout</a>
+                                    <a onClick={handleLogout}>Logout</a>
                                 </li>
                             </ul>
                         </div>

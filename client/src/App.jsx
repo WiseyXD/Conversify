@@ -20,8 +20,14 @@ function App() {
                         path="/"
                         element={isAuthorized ? <Chat /> : <Error />}
                     />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/login"
+                        element={!isAuthorized ? <Login /> : <Chat />}
+                    />
+                    <Route
+                        path="/register"
+                        element={!isAuthorized ? <Register /> : <Chat />}
+                    />
                     <Route path="*" element={<Error />} />
                 </Routes>
             </div>
