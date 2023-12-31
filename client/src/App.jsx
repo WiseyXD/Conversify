@@ -7,10 +7,13 @@ import Register from "./pages/Register";
 import Error from "./pages/Error";
 import Navbar from "./components/Navbar";
 
+// TODO : List Chats
+
 function App() {
     const [count, setCount] = useState(0);
     const navigate = useNavigate();
     const isAuthorized = useSelector((state) => state.root.auth.token);
+
     return (
         <>
             <Navbar />
