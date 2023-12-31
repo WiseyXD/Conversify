@@ -14,10 +14,13 @@ export const userApi = createApi({
         },
     }),
     endpoints: (builder) => ({
+        getAllUsers: builder.query({
+            query: () => "",
+        }),
         getUserByUserId: builder.query({
             query: (userId) => `find/${userId}`,
         }),
     }),
 });
 
-export const { useGetUserByUserIdQuery } = userApi;
+export const { useGetUserByUserIdQuery, useGetAllUsersQuery } = userApi;

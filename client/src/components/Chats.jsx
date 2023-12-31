@@ -1,17 +1,23 @@
 import React from "react";
 import ChatCard from "./ChatCard";
 import { useGetChatsByUserIdQuery } from "../redux/services/chatApi";
+import { useGetAllUsersQuery } from "../redux/services/userApi";
 import { useSelector } from "react-redux";
 import { MdAddComment } from "react-icons/md";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 
+// TODO : To show all the users those who have dont have a chat with the exisitng loggedin user => 5:15:44
+
 export default function Chats() {
     const id = useSelector((state) => state.root.auth.id);
-    const { data, isFetching } = useGetChatsByUserIdQuery(id);
-    if (isFetching) {
+    const { data: userById, isFetching: userByIdLoading } =
+        useGetChatsByUserIdQuery(id);
+    const { data: users, isFetching: usersIsLoading } = useGetAllUsersQuery();
+    if (userByIdLoading || usersIsLoading) {
         return null;
     }
-    const { allChats } = data;
+    const { allChats } = userById;
+    console.log(users);
     console.log(allChats);
     return (
         <div className="basis-1/3 min-h-screen flex flex-col gap-5 overflow-y-auto scrollbar-hide">
