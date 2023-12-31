@@ -11,7 +11,7 @@ export default function ChatCard({ chat }) {
     if (isFetching) return null;
     const { name } = data.user;
     return (
-        <div className="flex justify-between py-2 border-b-[1px]">
+        <div className="flex justify-between py-2 border-b-[1px]" role="button">
             <div className="flex gap-3">
                 <img src={Logo} className="rounded-full" alt="" />
                 <div className="flex flex-col">
@@ -19,7 +19,7 @@ export default function ChatCard({ chat }) {
                     <p>Message</p>
                 </div>
             </div>
-            <div className="hidden md:flex md:flex-col ">
+            <div className="hidden md:flex md:flex-col indicator">
                 <p>12/12/2023</p>
                 <p className="text-right">2</p>
             </div>

@@ -11,7 +11,7 @@ export default function Chats() {
     }
     const { allChats } = data;
     return (
-        <div className="basis-1/3 max-h-screen flex flex-col gap-5 overflow-y-auto scrollbar-hide">
+        <div className="basis-1/3 min-h-screen flex flex-col gap-5 overflow-y-auto scrollbar-hide">
             {allChats.map((chat) => (
                 <ChatCard chat={chat} />
             ))}
