@@ -4,6 +4,7 @@ import rootReducer from "./slices/rootReducer";
 import { authApi } from "./services/authApi";
 import { chatApi } from "./services/chatApi";
 import { userApi } from "./services/userApi";
+import { messageApi } from "./services/messageApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 const store = configureStore({
@@ -12,13 +13,15 @@ const store = configureStore({
         [authApi.reducerPath]: authApi.reducer,
         [chatApi.reducerPath]: chatApi.reducer,
         [userApi.reducerPath]: userApi.reducer,
+        [messageApi.reducerPath]: messageApi.reducer,
     },
 
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
             authApi.middleware,
             chatApi.middleware,
-            userApi.middleware
+            userApi.middleware,
+            messageApi.middleware
         ),
 });
 
