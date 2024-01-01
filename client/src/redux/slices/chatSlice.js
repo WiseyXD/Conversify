@@ -11,9 +11,12 @@ export const chatSlice = createSlice({
         setCurrentChat: (state, action) => {
             state.chat = action.payload;
         },
+        unsetCurrentChat: (state) => {
+            state.chat = null;
+        },
     },
 });
 
-export const { setCurrentChat } = chatSlice.actions;
+export const { setCurrentChat, unsetCurrentChat } = chatSlice.actions;
 
 export default chatSlice.reducer;
