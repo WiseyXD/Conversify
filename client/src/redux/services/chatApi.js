@@ -9,7 +9,17 @@ export const chatApi = createApi({
         getChatsByUserId: builder.query({
             query: (userId) => `${userId}`,
         }),
+        createChat: builder.mutation({
+            query: (credentials) => ({
+                url: "",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: credentials,
+            }),
+        }),
     }),
 });
 
-export const { useGetChatsByUserIdQuery } = chatApi;
+export const { useGetChatsByUserIdQuery, useCreateChatMutation } = chatApi;

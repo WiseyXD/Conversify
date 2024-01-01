@@ -9,6 +9,7 @@ export default function ChatCard({ chat }) {
     const recepientId = members.filter((id) => id !== senderId);
     const { data, isFetching } = useGetUserByUserIdQuery(recepientId);
     if (isFetching) return null;
+    console.log(data);
     const { name } = data.user;
     return (
         <div className="flex justify-between py-2 border-b-[1px]" role="button">
