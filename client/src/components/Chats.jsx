@@ -9,14 +9,15 @@ import { useSelector } from "react-redux";
 import { MdAddComment } from "react-icons/md";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { getPotentailChats } from "../utils/helper";
+import { useDispatch } from "react-redux";
+import { setCurrentChat } from "../redux/slices/chatSlice";
 
 // TODO : Search Filter
-// TODO : Handle No chats in chat card
-// TODO : Handle no users to add in modal componenet
+// TODO : Onclick setState in redux for curreent Chat and display it in Chat box
 
 export default function Chats() {
-    const [userChats, setUserChats] = useState(null);
-    const [rerender, setRerender] = useState(false);
+    const [filterChats, setFilterChats] = useState(null);
+    const dispatch = useDispatch();
     const id = useSelector((state) => state.root.auth.id);
     const {
         data: userById,
@@ -32,9 +33,10 @@ export default function Chats() {
     const { allChats } = userById;
     const { users } = usersObject;
     const potentialChats = getPotentailChats(users, allChats, id);
-    // console.log(users);
-    console.log(allChats);
-    // console.log(potentialChats);
+    function handleSelectChat(chat) {
+        dispatch(setCurrentChat(chat));
+    }
+
     function handleCreateChat(recepientId) {
         createChatMutation({
             firstId: id,
@@ -79,31 +81,43 @@ export default function Chats() {
                                 Create New Chats!
                             </h3>
                             <div className="py-4">
-                                {potentialChats.map((pUser) => {
-                                    return (
-                                        <div
-                                            className="flex flex-col"
-                                            key={pUser._id}
-                                        >
-                                            <button
-                                                onClick={() =>
-                                                    handleCreateChat(pUser._id)
-                                                }
+                                {potentialChats[0] === undefined ? (
+                                    <h1>You have chat with all users</h1>
+                                ) : (
+                                    potentialChats.map((pUser) => {
+                                        return (
+                                            <div
+                                                className="flex flex-col"
+                                                key={pUser._id}
                                             >
-                                                {pUser.name}
-                                            </button>
-                                        </div>
-                                    );
-                                })}
+                                                <button
+                                                    onClick={() =>
+                                                        handleCreateChat(
+                                                            pUser._id
+                                                        )
+                                                    }
+                                                >
+                                                    {pUser.name}
+                                                </button>
+                                            </div>
+                                        );
+                                    })
+                                )}
                             </div>
                         </div>
                     </dialog>
                 </div>
             </div>
             <div className="flex flex-col">
-                {allChats.map((chat) => (
-                    <ChatCard key={chat._id} chat={chat} />
-                ))}
+                {allChats[0] === undefined ? (
+                    <h1>No Chats Please add Chats</h1>
+                ) : (
+                    allChats.map((chat) => (
+                        <div onClick={() => handleSelectChat(chat)}>
+                            <ChatCard key={chat._id} chat={chat} />
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
