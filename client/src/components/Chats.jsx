@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentChat } from "../redux/slices/chatSlice";
 
 // TODO : Search Filter
-// TODO : Onclick setState in redux for curreent Chat and display it in Chat box
+// TODO : add Loader when new chat added from modal
 
 export default function Chats() {
     const [filterChats, setFilterChats] = useState(null);
@@ -42,7 +42,9 @@ export default function Chats() {
             firstId: id,
             secondId: recepientId,
         }).then(() => {
-            refetchChats(id);
+            setTimeout(() => {
+                refetchChats(id);
+            }, 1000);
         });
     }
     return (

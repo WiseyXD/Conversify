@@ -2,14 +2,13 @@ import React from "react";
 import Logo from "../assets/react.svg";
 import { useGetUserByUserIdQuery } from "../redux/services/userApi";
 import { useSelector } from "react-redux";
+import useGetRecepient from "../hooks/useGetRecepient";
 
 export default function ChatCard({ chat }) {
-    const senderId = useSelector((state) => state.root.auth.id);
-    const members = chat?.members;
-    const recepientId = members.filter((id) => id !== senderId);
-    const { data, isFetching } = useGetUserByUserIdQuery(recepientId);
-    if (isFetching) return null;
-    const { name } = data.user;
+    const data = useGetRecepient(chat);
+    if (data == undefined) return null;
+    const { user } = data;
+    const { name } = user;
     return (
         <div className="flex justify-between py-2 border-b-[1px]" role="button">
             <div className="flex gap-3">
