@@ -48,7 +48,7 @@ export default function Chats() {
         });
     }
     return (
-        <div className="basis-1/3 min-h-screen flex flex-col gap-5 overflow-y-auto scrollbar-hide">
+        <div className="basis-1/3 flex flex-col gap-5 overflow-y-auto scrollbar-hide">
             <div className="flex justify-between items-center">
                 <div className="flex basis-10/12">
                     <input

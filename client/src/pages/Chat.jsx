@@ -4,7 +4,7 @@ import ChatBox from "../components/ChatBox";
 
 export default function Chat() {
     return (
-        <div className="pt-3 flex gap-3">
+        <div className="pt-3 min-h-screen flex gap-3">
             <Chats />
             <ChatBox />
         </div>
