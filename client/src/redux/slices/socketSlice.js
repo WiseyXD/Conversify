@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    connection: null,
+    onlineUsers: null,
 };
 
 export const socketSlice = createSlice({
     name: "socket",
     initialState,
     reducers: {
-        setConnection: (state, action) => {
-            state.connection = action.payload;
+        setOnlineUsers: (state, action) => {
+            state.onlineUsers = action.payload;
         },
     },
 });

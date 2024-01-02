@@ -5,6 +5,7 @@ import {
     useCreateChatMutation,
 } from "../redux/services/chatApi";
 import { useGetAllUsersQuery } from "../redux/services/userApi";
+import useGetOnlineUsers from "../hooks/useGetOnlineUsers";
 import { useSelector } from "react-redux";
 import { MdAddComment } from "react-icons/md";
 import { HiMagnifyingGlass } from "react-icons/hi2";
@@ -27,6 +28,8 @@ export default function Chats() {
     const { data: usersObject, isFetching: usersIsLoading } =
         useGetAllUsersQuery();
     const [createChatMutation] = useCreateChatMutation();
+    const onlineUsers = useGetOnlineUsers();
+    console.log(onlineUsers);
     if (userByIdLoading || usersIsLoading) {
         return null;
     }
@@ -87,7 +90,7 @@ export default function Chats() {
                                     potentialChats.map((pUser) => {
                                         return (
                                             <div
-                                                className="flex flex-col"
+                                                className="flex"
                                                 key={pUser._id}
                                             >
                                                 <button
@@ -99,6 +102,9 @@ export default function Chats() {
                                                 >
                                                     {pUser.name}
                                                 </button>
+                                                {onlineUsers.includes(
+                                                    pUser._id
+                                                ) && <h1>Online</h1>}
                                             </div>
                                         );
                                     })
