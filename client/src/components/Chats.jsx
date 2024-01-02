@@ -104,7 +104,9 @@ export default function Chats() {
                                                 </button>
                                                 {onlineUsers.includes(
                                                     pUser._id
-                                                ) && <h1>Online</h1>}
+                                                ) ? (
+                                                    <h1>Online</h1>
+                                                ) : null}
                                             </div>
                                         );
                                     })
