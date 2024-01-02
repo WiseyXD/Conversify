@@ -37,14 +37,12 @@ export default function Chats() {
         dispatch(setCurrentChat(chat));
     }
 
-    function handleCreateChat(recepientId) {
-        createChatMutation({
+    async function handleCreateChat(recepientId) {
+        const { data } = await createChatMutation({
             firstId: id,
             secondId: recepientId,
         }).then(() => {
-            setTimeout(() => {
-                refetchChats(id);
-            }, 1000);
+            refetchChats(id);
         });
     }
     return (

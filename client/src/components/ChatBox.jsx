@@ -8,15 +8,18 @@ import {
 import useGetRecepient from "../hooks/useGetRecepient";
 
 // TODO : Create UI
-
+// TODO : Create a Message slice that stores the array of message in that and updates when new messages are added
 export default function ChatBox() {
     const [sendMessage, setSendMessage] = useState("");
     const currentUserId = useSelector((state) => state.root.auth.id);
     const currentUserName = useSelector((state) => state.root.auth.name);
     const currentChat = useSelector((state) => state.root.chat.chat);
     const [createMessageMutation] = useCreateMessageMutation();
-    const { data: messages, isFetching: loadingMessages } =
-        useGetMessagesByChatIdQuery(currentChat._id);
+    const {
+        data: messages,
+        isFetching: loadingMessages,
+        refetch: reloadMessages,
+    } = useGetMessagesByChatIdQuery(currentChat._id);
     const user = useGetRecepient(currentChat);
     if (user == undefined || loadingMessages) return null;
     const { user: recepient } = user;
@@ -25,12 +28,13 @@ export default function ChatBox() {
     async function handleSendMessage(e) {
         e.preventDefault();
         if (sendMessage === "") alert("Please type something you dummy");
-        const { data, isFetching } = createMessageMutation({
+        const { data, isFetching } = await createMessageMutation({
             chatId: currentChat._id,
             senderId: currentUserId,
             text: sendMessage,
         });
         setSendMessage("");
+        reloadMessages(currentChat._id);
         console.log(data);
     }
 
