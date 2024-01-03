@@ -44,7 +44,7 @@ export default function ChatBox() {
     }
 
     return (
-        <div className="w-full bg-base-100 flex flex-col">
+        <div className="w-full bg-base-100 flex flex-col max-h-screen overflow-y-auto scrollbar-hide">
             <div className="w-full h-full flex flex-col">
                 <div className="w-full bg-black text-center">
                     <p className="font-semibold text-xl">{recepient?.name}</p>
