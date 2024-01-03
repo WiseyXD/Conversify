@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [invalidCredetials, setInvalidCredentials] = useState(false);
     const [loginMutation] = useLoginMutation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function Login() {
             navigate("/");
         } catch (error) {
             console.log(error);
+            setInvalidCredentials(true);
         }
     }
     return (
@@ -70,6 +72,13 @@ export default function Login() {
                                 </a>
                             </label>
                         </div>
+                        {invalidCredetials && (
+                            <label className="label">
+                                <p className="label-text-alt text-red-500">
+                                    Invalid Credentials
+                                </p>
+                            </label>
+                        )}
                         <div className="form-control mt-6">
                             <button className="btn btn-primary" type="submit">
                                 Login

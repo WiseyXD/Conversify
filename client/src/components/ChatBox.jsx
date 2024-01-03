@@ -23,8 +23,8 @@ export default function ChatBox() {
         refetch: reloadMessages,
     } = useGetMessagesByChatIdQuery(currentChat._id);
     const user = useGetRecepient(currentChat);
-    useSendMessages();
-    useGetMessage();
+    // useSendMessages();
+    // useGetMessage();
     if (user == undefined || loadingMessages) return null;
     console.log(user);
     const { user: recepient } = user;
