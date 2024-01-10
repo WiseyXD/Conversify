@@ -11,7 +11,7 @@ import useGetMessage from "../hooks/useGetMessage";
 
 // TODO : Create UI
 // TODO : Create a Message slice that stores the array of message in that and updates when new messages are added
-// Chill Day
+// Will work on Socket.Io
 export default function ChatBox() {
     const [sendMessage, setSendMessage] = useState("");
     const currentUserId = useSelector((state) => state.root.auth.id);
