@@ -5,9 +5,11 @@ export const messageApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BASE_QUERY_MESSAGE,
     }),
+    tagTypes: ["Messages"],
     endpoints: (builder) => ({
         getMessagesByChatId: builder.query({
             query: (chatId) => `${chatId}`,
+            providesTags: ["Messages"],
         }),
         createMessage: builder.mutation({
             query: (credentials) => ({
@@ -18,6 +20,7 @@ export const messageApi = createApi({
                 },
                 body: credentials,
             }),
+            invalidatesTags: ["Messages"],
         }),
     }),
 });

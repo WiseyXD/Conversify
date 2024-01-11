@@ -5,9 +5,11 @@ export const chatApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BASE_QUERY_CHAT,
     }),
+    tagTypes: ["Chats"],
     endpoints: (builder) => ({
         getChatsByUserId: builder.query({
             query: (userId) => `${userId}`,
+            providesTags: ["Chats"],
         }),
         createChat: builder.mutation({
             query: (credentials) => ({
@@ -18,6 +20,7 @@ export const chatApi = createApi({
                 },
                 body: credentials,
             }),
+            invalidatesTags: ["Chats"],
         }),
     }),
 });

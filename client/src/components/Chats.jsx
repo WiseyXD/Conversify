@@ -44,8 +44,6 @@ export default function Chats() {
         const { data } = await createChatMutation({
             firstId: id,
             secondId: recepientId,
-        }).then(() => {
-            refetchChats(id);
         });
     }
     return (
@@ -102,11 +100,11 @@ export default function Chats() {
                                                 >
                                                     {pUser.name}
                                                 </button>
-                                                {onlineUsers.includes(
+                                                {/* {onlineUsers.includes(
                                                     pUser._id
                                                 ) ? (
                                                     <h1>Online</h1>
-                                                ) : null}
+                                                ) : null} */}
                                             </div>
                                         );
                                     })
