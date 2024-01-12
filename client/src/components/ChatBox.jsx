@@ -6,8 +6,6 @@ import {
     useCreateMessageMutation,
 } from "../redux/services/messageApi";
 import useGetRecepient from "../hooks/useGetRecepient";
-import useSendMessages from "../hooks/useSendMessages";
-import useGetMessage from "../hooks/useGetMessage";
 
 // TODO : Create UI
 // TODO : Create a Message slice that stores the array of message in that and updates when new messages are added
@@ -25,8 +23,6 @@ export default function ChatBox() {
         refetch: reloadMessages,
     } = useGetMessagesByChatIdQuery(currentChat._id);
     const user = useGetRecepient(currentChat);
-    // useSendMessages();
-    // useGetMessage();
     if (user == undefined || loadingMessages) return null;
     console.log(user);
     const { user: recepient } = user;
@@ -92,6 +88,7 @@ export default function ChatBox() {
                             type="text"
                             placeholder="Type here"
                             className="input input-bordered w-full basis-11/12"
+                            value={sendMessage}
                             onChange={(e) => setSendMessage(e.target.value)}
                         />
                         <button type="submit" className="basis-1/12 btn">
