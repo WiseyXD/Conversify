@@ -16,20 +16,41 @@ io.on("connection", (socket) => {
                 socketId: socket.id,
             });
         io.emit("getOnlineUsers", onlineUsers);
-        console.log(onlineUsers);
     });
 
-    // sned message
+    // send message
+    // socket.on("sendMessage", (message) => {
+    //     const user = onlineUsers.find(
+    //         (user) => user.userId === message.recepientId
+    //     );
+    //     if (user) {
+    //         io.to(user.socketId).emit("getMessage", message);
+    //     }
+    // });
+
     socket.on("sendMessage", (message) => {
-        const user = onlineUsers.find(
-            (user) => user.userId === message.recepientId
+        console.log("Received message:", message.text);
+
+        const recipientSocket = io.sockets.sockets.get(
+            message.recipientSocketId
         );
-        if (user) {
-            io.to(user.socketId).emit("getMessage", message);
+
+        if (recipientSocket) {
+            recipientSocket.emit("getMessage", message);
+        } else {
+            console.log("Recipient is not connected");
+            // Handle the case where the recipient is not connected
+            // You may want to send an acknowledgment or handle it according to your application's logic
         }
     });
 
     // recieve message
+    socket.on("getMessage", (message) => {
+        // Handle the received message
+        console.log("Received message:", message.text);
+        // You can broadcast the received message to all connected clients if needed
+        // io.emit("broadcastMessage", message);
+    });
 
     socket.on("disconnect", () => {
         onlineUsers = onlineUsers.filter((user) => user.socketId !== socket.id);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import {
@@ -6,6 +6,7 @@ import {
     useCreateMessageMutation,
 } from "../redux/services/messageApi";
 import useGetRecepient from "../hooks/useGetRecepient";
+import { io } from "socket.io-client";
 
 // TODO : Create UI
 // TODO : Create a Message slice that stores the array of message in that and updates when new messages are added
@@ -23,21 +24,41 @@ export default function ChatBox() {
         refetch: reloadMessages,
     } = useGetMessagesByChatIdQuery(currentChat._id);
     const user = useGetRecepient(currentChat);
+
+    const socket = io("http://localhost:3000");
+
+    useEffect(() => {
+        socket.on("getMessage", (message) => {
+            console.log("Receved from socket server");
+            reloadMessages();
+        });
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
     if (user == undefined || loadingMessages) return null;
-    console.log(user);
+
     const { user: recepient } = user;
     const allMessages = messages.message;
 
     async function handleSendMessage(e) {
         e.preventDefault();
         if (sendMessage === "") alert("Please type something you dummy");
+
         const { data, isFetching } = await createMessageMutation({
             chatId: currentChat._id,
             senderId: currentUserId,
             text: sendMessage,
         });
+
+        socket.emit("sendMessage", {
+            recepientId: recepient.userId, // Assuming user object has userId
+            text: sendMessage,
+        });
+
         setSendMessage("");
-        console.log(data);
     }
 
     return (

@@ -29,8 +29,7 @@ export default function Chats() {
         useGetAllUsersQuery();
     const [createChatMutation] = useCreateChatMutation();
     const onlineUsers = useGetOnlineUsers();
-    console.log(onlineUsers);
-    if (userByIdLoading || usersIsLoading) {
+    if (userByIdLoading || usersIsLoading || onlineUsers === null) {
         return null;
     }
     const { allChats } = userById;
@@ -100,11 +99,11 @@ export default function Chats() {
                                                 >
                                                     {pUser.name}
                                                 </button>
-                                                {/* {onlineUsers.includes(
+                                                {onlineUsers.includes(
                                                     pUser._id
                                                 ) ? (
                                                     <h1>Online</h1>
-                                                ) : null} */}
+                                                ) : null}
                                             </div>
                                         );
                                     })
