@@ -13,6 +13,7 @@ import { io } from "socket.io-client";
 // Will work on Socket.Io
 
 export default function ChatBox() {
+    const [socketId, setSocketId] = useState(null);
     const [sendMessage, setSendMessage] = useState("");
     const currentUserId = useSelector((state) => state.root.auth.id);
     const currentUserName = useSelector((state) => state.root.auth.name);
@@ -28,6 +29,10 @@ export default function ChatBox() {
     const socket = io("http://localhost:3000");
 
     useEffect(() => {
+        socket.on("connection", () => {
+            console.log("connected from client");
+            setSocketId(socket.id);
+        });
         socket.on("getMessage", (message) => {
             console.log("Receved from socket server");
             reloadMessages();
@@ -41,6 +46,7 @@ export default function ChatBox() {
     if (user == undefined || loadingMessages) return null;
 
     const { user: recepient } = user;
+    console.log(recepient);
     const allMessages = messages.message;
 
     async function handleSendMessage(e) {
@@ -54,8 +60,8 @@ export default function ChatBox() {
         });
 
         socket.emit("sendMessage", {
-            recepientId: recepient.userId, // Assuming user object has userId
-            text: sendMessage,
+            recepientId: recepient._id, // Assuming user object has userId
+            socketId,
         });
 
         setSendMessage("");

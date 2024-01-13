@@ -29,14 +29,12 @@ io.on("connection", (socket) => {
     // });
 
     socket.on("sendMessage", (message) => {
-        console.log("Received message:", message.text);
+        console.log("Received message");
 
-        const recipientSocket = io.sockets.sockets.get(
-            message.recipientSocketId
-        );
+        // const recipientSocket = io.sockets.sockets.get(message.recipientId);
 
-        if (recipientSocket) {
-            recipientSocket.emit("getMessage", message);
+        if (message.recepiientId) {
+            io.to(message.socketId).emit("getMessage", message);
         } else {
             console.log("Recipient is not connected");
             // Handle the case where the recipient is not connected
