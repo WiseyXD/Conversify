@@ -1,7 +1,10 @@
 const { Server } = require("socket.io");
 
 const io = new Server({
-    cors: "http://localhost:5173/",
+    cors: {
+        origin: "http://localhost:5173", // Allow frontend URL
+        methods: ["GET", "POST"],
+    },
 });
 
 let onlineUsers = [];
@@ -33,10 +36,21 @@ io.on("connection", (socket) => {
 
         // const recipientSocket = io.sockets.sockets.get(message.recipientId);
 
-        if (message.recepiientId) {
-            io.to(message.socketId).emit("getMessage", message);
+        if (message.recipientId) {
+            const recipient = onlineUsers.find(
+                (user) => user.userId === message.recipientId
+            );
+
+            if (recipient) {
+                console.log(`Emitting getMessage to ${recipient.socketId}`);
+                // Emit the message to the recipient's socketId
+                io.to(recipient.socketId).emit("getMessage", message);
+            } else {
+                console.log("Recipient is not connected");
+                // Handle the case where the recipient is not connected
+            }
         } else {
-            console.log("Recipient is not connected");
+            console.log("Recipient not recieved in socket server.");
             // Handle the case where the recipient is not connected
             // You may want to send an acknowledgment or handle it according to your application's logic
         }

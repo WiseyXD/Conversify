@@ -1,20 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import {
     useGetMessagesByChatIdQuery,
     useCreateMessageMutation,
 } from "../redux/services/messageApi";
-import useGetRecepient from "../hooks/useGetRecepient";
-import { io } from "socket.io-client";
-
-// TODO : Create UI
-// TODO : Create a Message slice that stores the array of message in that and updates when new messages are added
-// Will work on Socket.Io
+import useGetRecipient from "../hooks/useGetRecepient";
+// import { io } from "socket.io-client";
 
 export default function ChatBox() {
-    const [socketId, setSocketId] = useState(null);
+    // const [socket, setSocket] = useState(null);
     const [sendMessage, setSendMessage] = useState("");
+    const [allMessages, setAllMessages] = useState([]); // Local state to store messages
     const currentUserId = useSelector((state) => state.root.auth.id);
     const currentUserName = useSelector((state) => state.root.auth.name);
     const currentChat = useSelector((state) => state.root.chat.chat);
@@ -24,73 +21,101 @@ export default function ChatBox() {
         isFetching: loadingMessages,
         refetch: reloadMessages,
     } = useGetMessagesByChatIdQuery(currentChat?._id);
-    const user = useGetRecepient(currentChat);
-
-    const socket = io("http://localhost:3000");
+    const user = useGetRecipient(currentChat);
 
     useEffect(() => {
-        socket.on("connection", () => {
-            console.log("connected from client");
-            setSocketId(socket.id);
-        });
-        socket.on("getMessage", (message) => {
-            console.log("Receved from socket server");
-            reloadMessages();
-        });
+        const intervalId = setInterval(() => {
+            reloadMessages(); // Polling the server for new messages
+        }, 5000); // Poll every 5 seconds (you can adjust this interval)
 
-        return () => {
-            socket.disconnect();
-        };
-    }, []);
+        return () => clearInterval(intervalId); // Cleanup on component unmount
+    }, [reloadMessages]);
+
+    // useEffect(() => {
+    //     const socketInstance = io("http://localhost:3000"); // Initialize socket connection
+    //     setSocket(socketInstance);
+
+    //     // Listen for new messages from the server
+    //     socketInstance.on("getMessage", (message) => {
+    //         console.log("New message received:", message);
+
+    //         // // Update the state to add the new message
+    //         // setAllMessages((prevMessages) => [...prevMessages, message]);
+
+    //         // // Optionally, reload messages from the server if needed
+    //         // reloadMessages();
+    //     });
+
+    //     return () => {
+    //         socketInstance.disconnect(); // Cleanup the socket connection on unmount
+    //     };
+    // }, []); // Ensure the effect runs only once on mount
+
+    useEffect(() => {
+        if (messages) {
+            // Initialize the messages array from the server data
+            setAllMessages(messages.message);
+        }
+    }, [messages]);
 
     if (user == undefined || loadingMessages) return null;
 
-    const { user: recepient } = user;
-    console.log(recepient);
-    const allMessages = messages.message;
+    const { user: recipient } = user;
 
     async function handleSendMessage(e) {
         e.preventDefault();
-        if (sendMessage === "") alert("Please type something you dummy");
+        if (sendMessage === "") return alert("Please type something");
 
-        const { data, isFetching } = await createMessageMutation({
+        const { data } = await createMessageMutation({
             chatId: currentChat._id,
             senderId: currentUserId,
             text: sendMessage,
         });
 
-        socket.emit("sendMessage", {
-            recepientId: recepient._id, // Assuming user object has userId
-            socketId,
-        });
+        // Emit message to the recipient via socket
+        // if (socketRef.current) {
+        //     socketRef.current.emit("sendMessage", {
+        //         recipientId: recipient._id,
+        //         text: sendMessage,
+        //         senderId: currentUserId,
+        //         socketId: socket.id,
+        //     });
+        // }
 
-        setSendMessage("");
+        setSendMessage(""); // Clear the input after sending
     }
 
     return (
         <div className="w-full bg-base-100 flex flex-col max-h-screen overflow-y-auto scrollbar-hide">
             <div className="w-full h-full flex flex-col">
                 <div className="w-full bg-black text-center">
-                    <p className="font-semibold text-xl">{recepient?.name}</p>
+                    <p className="font-semibold text-xl">{recipient?.name}</p>
                 </div>
                 <div className="h-full flex flex-col justify-between">
-                    <div className="overflow-y-auto scrollbar-hide">
-                        {allMessages[0] != undefined ? (
-                            messages.message.map((message) => {
+                    <div
+                        id="messagesContainer"
+                        className="overflow-y-auto scrollbar-hide"
+                    >
+                        {allMessages.length > 0 ? (
+                            allMessages.map((message) => {
                                 return (
                                     <div
                                         className={
-                                            message.senderId === recepient._id
+                                            message.senderId === recipient._id
                                                 ? "chat chat-start"
                                                 : "chat chat-end"
                                         }
                                         key={message._id}
                                     >
                                         <div className="chat-header">
-                                            {message.senderId === recepient._id
-                                                ? recepient.name + " "
+                                            {message.senderId === recipient._id
+                                                ? recipient.name + " "
                                                 : currentUserName + " "}
-                                            <time className="text-xs opacity-50"></time>
+                                            <time className="text-xs opacity-50">
+                                                {moment(
+                                                    message.createdAt
+                                                ).calendar()}
+                                            </time>
                                         </div>
                                         <div className="chat-bubble">
                                             {message.text}
