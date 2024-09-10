@@ -23,7 +23,7 @@ export default function ChatBox() {
         data: messages,
         isFetching: loadingMessages,
         refetch: reloadMessages,
-    } = useGetMessagesByChatIdQuery(currentChat._id);
+    } = useGetMessagesByChatIdQuery(currentChat?._id);
     const user = useGetRecepient(currentChat);
 
     const socket = io("http://localhost:3000");
